@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRidium | Professional IR Analysis Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#060910;
+  --surface:rgba(17,24,39,0.6);
+  --surface-solid:#111827;
+  --surface2:rgba(22,31,46,0.5);
+  --border:rgba(38,50,71,0.8);
+  --border-glass:rgba(255,255,255,0.08);
+  --text:#ffffff;
+  --dim:#9ca3af;
+  --accent:#00d9ff;
+  --accent2:#3b82f6;
+  --glass-bg:rgba(255,255,255,0.04);
+  --glass-bg-strong:rgba(255,255,255,0.07);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.7;}
+#bg{position:fixed;inset:0;z-index:-2;}
+.grid{position:fixed;inset:0;z-index:-1;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:40px 40px;}
+
+nav{
+  position:fixed;top:0;width:100%;height:70px;
+  display:flex;justify-content:space-between;align-items:center;padding:0 8%;
+  backdrop-filter:blur(24px) saturate(1.5);
+  -webkit-backdrop-filter:blur(24px) saturate(1.5);
+  background:rgba(6,9,16,0.6);
+  border-bottom:1px solid var(--border-glass);
+  z-index:1000;
+}
+.logo{font-size:1.3rem;font-weight:800;display:flex;align-items:center;gap:8px;}
+.logo i{color:var(--accent);font-size:1.1rem;}
+.logo span{color:var(--accent);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.badge{
+  background:rgba(0,217,255,0.08);color:var(--accent);
+  border:1px solid rgba(0,217,255,0.2);padding:6px 14px;
+  border-radius:999px;font-size:.82rem;font-weight:600;
+  backdrop-filter:blur(8px);
+}
+.repo-btn{
+  display:flex;align-items:center;gap:7px;
+  background:var(--glass-bg-strong);
+  border:1px solid var(--border-glass);
+  color:var(--text);padding:7px 14px;
+  border-radius:999px;font-size:.82rem;font-weight:600;
+  text-decoration:none;
+  backdrop-filter:blur(8px);
+  transition:.25s;
+}
+.repo-btn:hover{background:rgba(255,255,255,0.11);border-color:rgba(255,255,255,0.15);}
+.repo-btn i{color:#9ca3af;font-size:.85rem;}
+
+.hero{min-height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column;text-align:center;padding:120px 20px 80px;}
+.hero h1{font-size:clamp(3rem,8vw,6rem);line-height:1.05;margin-bottom:20px;}
+.gradient{background:linear-gradient(90deg,var(--accent),#6ee7ff);-webkit-background-clip:text;color:transparent;background-clip:text;}
+.hero p{max-width:760px;color:var(--dim);font-size:1.15rem;}
+.buttons{display:flex;gap:14px;margin-top:35px;flex-wrap:wrap;justify-content:center;}
+
+.btn{text-decoration:none;padding:14px 28px;border-radius:14px;font-weight:700;transition:.3s;display:flex;align-items:center;gap:8px;}
+.primary{background:var(--accent);color:#000;box-shadow:0 0 0 rgba(0,217,255,0);}
+.primary:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,217,255,.3);}
+.secondary{
+  border:1px solid var(--border-glass);color:white;
+  background:var(--glass-bg-strong);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.secondary:hover{background:rgba(255,255,255,0.1);}
+
+.container{width:min(1200px,90%);margin:auto;}
+.section{padding:90px 0;}
+.section-title{text-align:center;margin-bottom:50px;}
+.section-title h2{font-size:2.5rem;margin-bottom:8px;}
+.section-title p{color:var(--dim);}
+
+.screenshot{
+  background:var(--glass-bg);
+  border:1px solid var(--border-glass);
+  border-radius:5px;overflow:hidden;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 0 80px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.card{
+  background:var(--glass-bg);
+  border:1px solid var(--border-glass);
+  padding:30px;border-radius:20px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  transition:.3s;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.card:hover{transform:translateY(-5px);border-color:rgba(0,217,255,.25);background:var(--glass-bg-strong);box-shadow:0 0 30px rgba(0,217,255,.06),inset 0 1px 0 rgba(255,255,255,0.07);}
+.card-icon{width:46px;height:46px;border-radius:12px;background:rgba(0,217,255,0.08);border:1px solid rgba(0,217,255,0.15);display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
+.card-icon i{color:var(--accent);font-size:1.2rem;}
+.card h3{margin-bottom:10px;font-size:1.05rem;}
+.card p{color:var(--dim);font-size:.95rem;}
+
+.steps{display:grid;gap:14px;}
+.step{
+  background:var(--glass-bg);
+  border:1px solid var(--border-glass);
+  padding:18px 22px;border-radius:14px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  display:flex;align-items:center;gap:16px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.step-num{width:32px;height:32px;border-radius:50%;background:rgba(0,217,255,0.1);border:1px solid rgba(0,217,255,0.2);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:var(--accent);flex-shrink:0;}
+.step-text{color:var(--dim);font-size:.95rem;}
+.step-text strong{color:var(--text);}
+
+/* Circuit diagram placeholder */
+.circuit-placeholder{
+  margin-top:40px;
+  border-radius:20px;
+  border:2px dashed rgba(0,217,255,0.25);
+  background:rgba(0,217,255,0.03);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;
+  padding:60px 20px;
+  text-align:center;
+}
+.circuit-placeholder i{font-size:2.8rem;color:rgba(0,217,255,0.3);}
+.circuit-placeholder p{color:var(--dim);font-size:.9rem;}
+.circuit-placeholder span{color:rgba(0,217,255,0.5);font-size:.82rem;font-family:'JetBrains Mono',monospace;}
+
+/* Wiring pins */
+.pins{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:28px;}
+.pin{
+  background:var(--glass-bg);
+  border:1px solid var(--border-glass);
+  padding:16px 20px;border-radius:14px;
+  backdrop-filter:blur(12px);
+  display:flex;align-items:center;gap:14px;
+}
+.pin-badge{width:42px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;font-family:'JetBrains Mono',monospace;}
+.pin-vcc{background:rgba(255,80,80,0.12);border:1px solid rgba(255,80,80,0.3);color:#f87171;}
+.pin-gnd{background:rgba(120,120,120,0.12);border:1px solid rgba(120,120,120,0.3);color:#9ca3af;}
+.pin-out{background:rgba(0,217,255,0.1);border:1px solid rgba(0,217,255,0.25);color:var(--accent);}
+.pin-text{color:var(--dim);font-size:.88rem;line-height:1.4;}
+.pin-text strong{color:var(--text);}
+
+.codebox{
+  background:rgba(4,6,12,0.8);
+  border:1px solid var(--border-glass);
+  border-radius:18px;padding:28px;overflow:auto;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.code-header{display:flex;align-items:center;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border-glass);}
+.code-dot{width:12px;height:12px;border-radius:50%;}
+.code-header span{font-size:.8rem;color:#475569;margin-left:4px;}
+pre{white-space:pre-wrap;}
+code{font-family:'JetBrains Mono',monospace;color:#7dd3fc;font-size:.88rem;line-height:1.7;}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:55px;}
+.stat{
+  background:var(--glass-bg);
+  border:1px solid var(--border-glass);
+  border-radius:18px;padding:24px;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.05);
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;
+}
+.stat i{font-size:1.4rem;color:var(--accent);margin-bottom:4px;}
+.stat h3{color:var(--accent);font-size:1.9rem;line-height:1;}
+.stat p{color:var(--dim);font-size:.88rem;}
+
+footer{border-top:1px solid var(--border-glass);text-align:center;padding:40px 20px;color:var(--dim);backdrop-filter:blur(12px);}
+footer a{color:var(--accent);text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+
+@media(max-width:768px){
+  .hero h1{font-size:3rem;}
+  .section-title h2{font-size:2rem;}
+  nav{padding:0 5%;}
+  .nav-right{gap:8px;}
+  .badge{display:none;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+<div class="grid"></div>
+
+<nav>
+  <div class="logo">
+    <img src="logo.png" alt="IRidium Logo" style="width:28px;height:28px;">
+    <div><span>IR</span>idium</div>
+  </div>
+  <div class="nav-right">
+    <a href="https://github.com/ytcyberslotp90/iridium" class="repo-btn" target="_blank">
+      <i class="fa-brands fa-github"></i> Repository
+    </a>
+    <div class="badge">v1.0 Stable</div>
+  </div>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <h1>
+    Decode Infrared Signals
+    <br>
+    <span class="gradient">With Precision</span>
+  </h1>
+  <p>Professional infrared signal analysis suite for Arduino, ESP32 and embedded electronics development.</p>
+  <div class="buttons">
+    <a href="IRidium.zip" class="btn primary">
+      <i class="fa-solid fa-download"></i> Download IRidium
+    </a>
+    <a href="#features" class="btn secondary">
+      <i class="fa-solid fa-compass"></i> Explore Features
+    </a>
+    <a href="https://github.com/ytcyberslotp90/iridium" class="btn secondary" target="_blank">
+      <i class="fa-brands fa-github"></i> View on GitHub
+    </a>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <i class="fa-solid fa-tower-broadcast"></i>
+      <h3>10+</h3>
+      <p>IR Protocols</p>
+    </div>
+    <div class="stat">
+      <i class="fa-solid fa-bolt"></i>
+      <h3>Live</h3>
+      <p>Signal Capture</p>
+    </div>
+    <div class="stat">
+      <i class="fa-solid fa-file-excel"></i>
+      <h3>XLSX</h3>
+      <p>Export Support</p>
+    </div>
+    <div class="stat">
+      <i class="fa-solid fa-wifi"></i>
+      <h3>100%</h3>
+      <p>Offline Tool</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SCREENSHOT ═══ -->
+<section class="section container">
+  <div class="section-title">
+    <h2>Application Preview</h2>
+    <p>IRidium in action — live signal capture and protocol decoding.</p>
+  </div>
+  <div class="screenshot" style="width:725px;max-width:100%;margin:auto;">
+    <img src="screenshot.png" alt="IRidium Application Preview" style="width:100%;height:auto;display:block;">
+  </div>
+</section>
+
+<!-- ═══ FEATURES ═══ -->
+<section class="section container" id="features">
+  <div class="section-title">
+    <h2>Features</h2>
+    <p>Everything needed for infrared analysis.</p>
+  </div>
+  <div class="features">
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
+      <h3>Protocol Decoder</h3>
+      <p>Decode NEC, Sony, Samsung, RC5 and other common protocols automatically.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-chart-bar"></i></div>
+      <h3>Pulse Analyzer</h3>
+      <p>Analyze pulse timings and inspect raw infrared data with precision tools.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+      <h3>Real-Time Capture</h3>
+      <p>Monitor incoming IR traffic instantly over serial with zero latency.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon"><i class="fa-solid fa-file-excel"></i></div>
+      <h3>Excel Export</h3>
+      <p>Export captured sessions directly to XLSX files for further analysis.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GETTING STARTED ═══ -->
+<section class="section container">
+  <div class="section-title">
+    <h2>Getting Started</h2>
+    <p>Up and running in four steps.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-text">Install <strong>Arduino IDE</strong> and the <strong>IRremote</strong> library by Armin Joachimsmeyer.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-text">Wire your IR receiver to the Arduino as shown in the circuit diagram below.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-text">Upload the firmware sketch to your Arduino and connect via USB.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-text">Open <strong>IRidium</strong>, select the correct <strong>COM port</strong> at <strong>9600 baud</strong>, and hit Connect.</div>
+    </div>
+  </div>
+
+  <!-- Circuit Diagram -->
+  <div style="margin-top:50px;">
+    <div class="section-title" style="margin-bottom:28px;">
+      <h2 style="font-size:1.8rem;">Circuit Diagram</h2>
+      <p>Three wires. That's all it takes.</p>
+    </div>
+
+    <!-- Placeholder image — replace circuit.png when ready -->
+    <div class="screenshot" style="width:725px;max-width:100%;margin:auto;">
+    <img src="circuit.png" alt="IRidium Application Preview" style="width:100%;height:auto;display:block;">
+  </div>
+
+    <!-- Wiring reference -->
+    <div class="pins">
+      <div class="pin">
+        <div class="pin-badge pin-vcc">VCC</div>
+        <div class="pin-text">IR Receiver <strong>VCC</strong> → Arduino <strong>5V</strong></div>
+      </div>
+      <div class="pin">
+        <div class="pin-badge pin-gnd">GND</div>
+        <div class="pin-text">IR Receiver <strong>GND</strong> → Arduino <strong>GND</strong></div>
+      </div>
+      <div class="pin">
+        <div class="pin-badge pin-out">OUT</div>
+        <div class="pin-text">IR Receiver <strong>OUT</strong> → Arduino <strong>Pin 2 (D2)</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FIRMWARE ═══ -->
+<section class="section container">
+  <div class="section-title">
+    <h2>Device Firmware</h2>
+    <p>Copy this sketch directly into your Arduino IDE.</p>
+  </div>
+  <div class="codebox">
+    <div class="code-header">
+      <div class="code-dot" style="background:#ff5f57"></div>
+      <div class="code-dot" style="background:#febc2e"></div>
+      <div class="code-dot" style="background:#28c840"></div>
+      <span>IRidium.ino</span>
+    </div>
+<pre><code>#include &lt;IRremote.hpp&gt;
+
+#define IR_PIN 2
+
+void setup()
+{
+    Serial.begin(9600);
+
+    IrReceiver.begin(
+        IR_PIN,
+        ENABLE_LED_FEEDBACK
+    );
+}
+
+void loop()
+{
+    if (IrReceiver.decode())
+    {
+        Serial.print("Protocol=");
+        Serial.print(
+            getProtocolString(
+                IrReceiver.decodedIRData.protocol
+            )
+        );
+
+        Serial.print(";Address=0x");
+        Serial.print(
+            IrReceiver.decodedIRData.address,
+            HEX
+        );
+
+        Serial.print(";Command=0x");
+        Serial.print(
+            IrReceiver.decodedIRData.command,
+            HEX
+        );
+
+        Serial.print(";HEX=");
+        Serial.print(
+            IrReceiver.decodedIRData.decodedRawData,
+            HEX
+        );
+
+        Serial.print(";Bits=");
+        Serial.print(
+            IrReceiver.decodedIRData.numberOfBits
+        );
+
+        Serial.print(";RAW=");
+
+        for (
+            uint16_t i = 1;
+            i < IrReceiver.irparams.rawlen;
+            i++
+        )
+        {
+            Serial.print(
+                IrReceiver.irparams.rawbuf[i]
+            );
+
+            if (
+                i <
+                IrReceiver.irparams.rawlen - 1
+            )
+            {
+                Serial.print(",");
+            }
+        }
+
+        Serial.println();
+
+        IrReceiver.resume();
+    }
+}</code></pre>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p>© 2026 IRidium Project &nbsp;·&nbsp; Professional Infrared Analysis Suite &nbsp;·&nbsp;
+    <a href="https://github.com/ytcyberslotp90/iridium" target="_blank">
+      <i class="fa-brands fa-github"></i> GitHub
+    </a>
+  </p>
+</footer>
+
+<script>
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+let w,h;
+function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;}
+window.addEventListener("resize",resize);
+resize();
+const stars=[];
+for(let i=0;i<120;i++){stars.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5+0.3,v:Math.random()*0.4+0.15});}
+function animate(){
+  ctx.clearRect(0,0,w,h);
+  for(const s of stars){
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(0,217,255,.7)";ctx.fill();
+    s.y+=s.v;
+    if(s.y>h){s.y=0;s.x=Math.random()*w;}
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+</body>
+</html>
