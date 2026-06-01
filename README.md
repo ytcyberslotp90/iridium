@@ -12,7 +12,7 @@
 
 ## What is IRidium?
 
-IRidium is a desktop application for capturing and analyzing infrared signals from Arduino and ESP32 microcontrollers over a serial connection. It decodes common IR protocols in real time, lets you inspect raw pulse data, and exports sessions to Excel for further analysis — all without an internet connection.
+IRidium is a desktop application for capturing and analyzing infrared signals from Arduino and ESP32 microcontrollers over a serial connection. It decodes common IR protocols in real time, lets you inspect raw pulse data, and exports sessions to Excel for further analysis - all without an internet connection.
 
 ---
 
@@ -25,6 +25,12 @@ IRidium is a desktop application for capturing and analyzing infrared signals fr
 | **Real-Time Capture** | Live monitoring of IR traffic over serial (9600 baud) |
 | **XLSX Export** | Export full capture sessions to Excel spreadsheets |
 | **100% Offline** | No internet connection required — ever |
+
+---
+
+## Requirements
+- Arduino UNO
+- .NET 4.7.2
 
 ---
 
