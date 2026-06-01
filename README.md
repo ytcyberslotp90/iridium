@@ -1,7 +1,7 @@
 # IRidium — Professional Infrared Analysis Suite
 
 > Decode, capture, and export infrared signals with precision.  
-> Built for Arduino and ESP32 embedded development.
+> Built for Arduino UNO embedded development.
 
 ![Version](https://img.shields.io/badge/version-1.0--stable-3b0b9c)
 ![Platform](https://img.shields.io/badge/platform-Windows-blue)
